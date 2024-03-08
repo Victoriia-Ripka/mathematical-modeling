@@ -1,11 +1,10 @@
 import numpy as np
 
-def gauss_seidel(A, b, d_error=0.001, max_iter=15):
+def gauss_seidel(A, b, d_error=0.001, max_iter=10):
     # кількість рівнянь
     equations_number = len(b)
     # початкові наближення х = [0. 0. 0. 0.]
     x = np.zeros(equations_number)
-
 
     print("System of Equations:")
     for i in range(equations_number):
@@ -23,7 +22,7 @@ def gauss_seidel(A, b, d_error=0.001, max_iter=15):
         x[2] = (b[2] - A[2, 0] * x_prev[0] - A[2, 1] * x_prev[1] - A[2, 3] * x_prev[3]) / A[2, 2]
         x[3] = (b[3] - A[3, 0] * x_prev[0] - A[3, 1] * x_prev[1] - A[3, 2] * x_prev[2]) / A[3, 3]
 
-        error = np.max(np.abs(x - x_prev))
+        error = np.mean(np.abs(x - x_prev))
         print(f"Iteration {k + 1}:\t\t {x[0]:.4f}\t\t {x[1]:.4f}\t\t {x[2]:.4f}\t\t {x[3]:.4f}\t\t {error:.4f}")
 
         if error < d_error:
