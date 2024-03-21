@@ -70,21 +70,19 @@ x_rk4, y_rk4 = runge_kutta_4(x0, xn, y0, h)
 # Точний розв'язок для порівняння
 x_exact = np.array([1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4])
 y_exact = np.array([2.2, 2.482407, 2.799851, 3.152735, 3.545817, 3.983248, 4.469607, 5.009956, 5.609882, 6.275559, 7.013805])
-print(x_exact, '\n', y_exact, '\n\n')
+# print(x_exact, '\n', y_exact, '\n\n')
 
 
 if len(y_exact) == len(y_euler):
-    print('euler:          ', y_euler)
-    print('error delta:    ', abs(y_exact - y_euler))
+    print(" x_exact  \t  y_exact  \t  y_euler  \t  Diff Eul \t  y_eul_cau  \t  Diff Eu Cau  \t  y_impr_eul  \t  Diff Imp Eul \ty_rk4 \t Diff RK4")
+    for i in range(11):
+        absolute_difference_euler = abs(y_exact[i] - y_euler[i])
+        absolute_difference_euler_cauchy = abs(y_exact[i] - y_euler_cauchy[i])
+        absolute_difference_improved_euler = abs(y_exact[i] - y_improved_euler[i])
+        absolute_difference_rk4 = abs(y_exact[i] - y_rk4[i])
+        print(f"{x_exact[i]:^10.3f} \t {y_exact[i]:^10.3f} \t {y_euler[i]:^10.3f} \t {absolute_difference_euler:^10.3f} \t {y_euler_cauchy[i]:^10.3f} \t {absolute_difference_euler_cauchy:^10.3f} \t {y_improved_euler[i]:^10.3f} \t {absolute_difference_improved_euler:^10.3f} \t {y_rk4[i]:^10.3f} \t {absolute_difference_rk4:^10.3f}")
 else:
     print('Розмірності не співпадають. Неможливо порівняти.')
-
-print('euler_cauchy:   ', y_euler_cauchy)
-print('error delta:    ', abs(y_exact - y_euler_cauchy))
-print('improved_euler: ', y_improved_euler)
-print('error delta:    ', abs(y_exact-y_improved_euler))
-print('runge_kutta:    ', y_rk4)
-print('error delta:    ', abs(y_exact-y_rk4))
 
 # Графіки
 plt.plot(x_euler, y_euler, label='Euler')
@@ -97,4 +95,4 @@ plt.ylabel('y')
 plt.title('Numerical Solutions of the Differential Equation')
 plt.legend()
 plt.grid(True)
-plt.show()
+# plt.show()
