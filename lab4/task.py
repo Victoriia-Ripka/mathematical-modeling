@@ -18,15 +18,24 @@ def gausa(A, b):
 
     return x
 
-# def transformLamdaTpSystem(Lambda):
-#     system = np.array([])
+def transformLamdaTpSystem(Lambda):
+    system = []
 
-#     for i in range(len(Lambda)):
-#         line = np.array([])
-#         for j in range(len(Lambda[i])):
-#             line.apend()
-
-#     return system
+    for i in range(len(Lambda)):
+        line = []
+        for j in range(len(Lambda[i])):
+            if j == len(Lambda[i]) - 1:
+                line.append(1)
+            elif i == j:
+                a = 0 - np.sum(Lambda[i])
+                line.append(a)
+            else:
+                line.append(Lambda[i][j])
+        
+        system.append(line)
+    
+    new_system = np.array(system)
+    return new_system.T
 
 # Задана матриця інтенсивності переходів
 Lambda = np.array([[0,   2, 1, 0   ],
@@ -34,14 +43,9 @@ Lambda = np.array([[0,   2, 1, 0   ],
                    [1.2, 0, 0, 0.03],
                    [0.5, 0, 0, 0   ]])
 
-answers = np.array([0, 0, 0, 1,])
-
 # Задана система рівнянь
-system = np.array([[-3, 1.5, 1.2, 0.5],
-              [2, -1.52, 0, 0],
-              [1, 0, -1.23, 0],
-              [1, 1, 1, 1]])
-
+system = transformLamdaTpSystem(Lambda)
+answers = np.array([0, 0, 0, 1,])
 
 solution = gausa(system, answers)
 for i in range(len(solution)):
