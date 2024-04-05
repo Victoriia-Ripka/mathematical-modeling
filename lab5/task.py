@@ -22,6 +22,8 @@ def main():
 
     probability_state = calculate_probability_state(matrix_transition_probabilities.T, started_values)
 
+    print(matrix_transition_probabilities)
+
     table = PrettyTable()
     table.field_names = ["step", "p1", "p2", "p3", "p4", "p5"]
     table.add_row(['0'] + list(started_values))
