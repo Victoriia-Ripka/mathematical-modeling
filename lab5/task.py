@@ -24,9 +24,10 @@ def main():
 
     table = PrettyTable()
     table.field_names = ["step", "p1", "p2", "p3", "p4", "p5"]
+    table.add_row(['0'] + list(started_values))
     for i, item in enumerate(probability_state):
         formatted_items = [format(x, '.4f') for x in item]
-        table.add_row([i] + formatted_items)
+        table.add_row([i+1] + formatted_items)
 
     print(table)
 
