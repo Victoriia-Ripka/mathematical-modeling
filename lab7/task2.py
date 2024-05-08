@@ -25,27 +25,37 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
     while True:
         # step 3
         grad = gradient(x)
-        termination_criterion = np.sqrt(np.sum(np.square(grad)))
+        grad_abs = np.sqrt(np.sum(np.square(grad)))
 
         # step 4 and 5
-        if termination_criterion < eps1 or k == M:
+        if grad_abs < eps1 or k == M:
             print("break termination_criterion < eps1 or k == M")
+            print(table)
             return x
         
         # step 6
-        a_step = a / (k + 1)
+        # a_step = a / (k + 1)
+        if k == 0:
+            a_step = a
+        else:
+            a_step = a / 2
 
         # step 7
-        x_next = [x[0] - a*grad[0], x[1] - a*grad[1]]
+        x_next = [x[0] - a_step*grad[0], x[1] - a_step*grad[1]]
 
-        row = [format_float_list(x), "{:.4f}".format(termination_criterion), "{:.4f}".format(a), format_float_list(x_next), "{:.4f}".format(np.linalg.norm(np.array(x_next) - np.array(x))), "{:.4f}".format(np.abs(function(x_next) - function(x)))]
+        row = [format_float_list(x), "{:.4f}".format(grad_abs), "{:.4f}".format(a_step), format_float_list(x_next), "{:.4f}".format(np.linalg.norm(np.array(x_next) - np.array(x))), "{:.4f}".format(np.abs(function(x_next) - function(x)))]
         table.add_row([k+1] + row)
 
         # step 8
+        print("f(x+1): ", function(x_next))
+        print("f(x): ", function(x))
         if function(x_next) - function(x) < 0:
             # крок 9
-            if np.all(np.abs(function(x_next) - function(x)) < eps2) and np.all(np.sqrt(np.subtract(np.square(x_next), np.square(x))) < eps2) :
+            func_abs = np.abs(function(x_next) - function(x))
+            x_distance = np.linalg.norm(np.array(x_next) - np.array(x))
+            if func_abs < eps2 and x_distance < eps2:
                 print("break np.abs(function(x_next) - function(x)) < eps2")
+                print(table)
                 return x_next
             else:
                 x = x_next.copy()
@@ -55,11 +65,13 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
             while function(x_next) - function(x) > 0:
                 a_step = a_step/2
                 x_next = np.array([x[0] - a_step*grad[0], x[1] - a_step*grad[1]]).copy()
-                print(x, x_next)
             
 
         # крок 9
-        if np.all(np.abs(function(x_next) - function(x)) < eps2) and np.all(np.sqrt(np.subtract(np.square(x_next), np.square(x))) < eps2) :
+        func_abs = np.abs(function(x_next) - function(x))
+        x_distance = np.linalg.norm(np.array(x_next) - np.array(x))
+        if func_abs < eps2 and x_distance < eps2:
+            print(table)
             return x_next  # a or b step9
         
         k += 1
@@ -79,5 +91,7 @@ def main():
 
     answer = gradient_optimize_method(x, eps1, eps2, M, a)
     print(answer)
+    func = function(answer)
+    print(func)
 
 main()
