@@ -34,7 +34,6 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
             return x
         
         # step 6
-        # a_step = a / (k + 1)
         if k == 0:
             a_step = a
         else:
@@ -52,7 +51,7 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
             func_abs = np.abs(function(x_next) - function(x))
             x_distance = np.linalg.norm(np.array(x_next) - np.array(x))
             if func_abs < eps2 and x_distance < eps2:
-                print("break np.abs(function(x_next) - function(x)) < eps2")
+                print("break step 8 step 9")
                 print(table)
                 return x_next
             else:
@@ -69,15 +68,16 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
         func_abs = np.abs(function(x_next) - function(x))
         x_distance = np.linalg.norm(np.array(x_next) - np.array(x))
         if func_abs < eps2 and x_distance < eps2:
+            print("break func_abs < eps2 and x_distance < eps2")
             print(table)
-            return x_next  # a or b step9
+            return x_next  
         
         k += 1
         x = x_next.copy()
     
 
 def main():
-    eps1, eps2 = 0.05, 0.15
+    eps1, eps2 = 0.1, 0.15
     M = 10
     a = 0.5
     x = [0, 3]
