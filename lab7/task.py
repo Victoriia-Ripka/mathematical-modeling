@@ -19,10 +19,14 @@ def format_float_list(lst):
 def gradient_optimize_method(x, eps1, eps2, M, a):
     # step 2
     k = 0
+    k_dict = {}
+
     table = PrettyTable()
     table.field_names = ["iter", "x", "||gradient||", "a", "x_next", "||x_next - x||", "|f(x_next) - f(x)|"]    
 
     while True:
+        k_dict[k] = False
+
         # step 3
         grad = gradient(x)
         grad_abs = np.sqrt(np.sum(np.square(grad)))
@@ -51,9 +55,13 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
             func_abs = np.abs(function(x_next) - function(x))
             x_distance = np.linalg.norm(np.array(x_next) - np.array(x))
             if func_abs < eps2 and x_distance < eps2:
-                print("break step 8 step 9")
-                print(table)
-                return x_next
+                k_dict[k] = True
+
+                # step 9a
+                if k_dict[k-1] == True:
+                    print("break np.abs(function(x_next) - function(x)) < eps2")
+                    print(table)
+                    return x_next
             else:
                 x = x_next.copy()
                 k += 1
@@ -68,16 +76,19 @@ def gradient_optimize_method(x, eps1, eps2, M, a):
         func_abs = np.abs(function(x_next) - function(x))
         x_distance = np.linalg.norm(np.array(x_next) - np.array(x))
         if func_abs < eps2 and x_distance < eps2:
-            print("break func_abs < eps2 and x_distance < eps2")
-            print(table)
-            return x_next  
-        
+            k_dict[k] = True
+
+            # step 9a
+            if k_dict[k-1] == True:
+                print(table)
+                return x_next
+            
         k += 1
         x = x_next.copy()
-    
+
 
 def main():
-    eps1, eps2 = 0.1, 0.15
+    eps1, eps2 = 0.05, 0.15
     M = 10
     a = 0.5
     x = [0, 3]
@@ -88,8 +99,8 @@ def main():
     print("Метод градієнтного спуску із постійним кроком\n\n")
 
     x_answer = gradient_optimize_method(x, eps1, eps2, M, a)
-    print(x_answer)
+    print("Оптимальне значення: (", x_answer[0], ",", x_answer[1], ")")
     func = function(x_answer)
-    print(func)
+    print("Мінімальне значення функції: ", func)
 
 main()
